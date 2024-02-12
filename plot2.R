@@ -23,19 +23,36 @@ Elect_data = Elect_data %>%
 ## Extracting the data from the dates 2007-02-01 and 2007-02-02
 
 Final_Elect_data = subset(Elect_data, format(Date_Time,format = "%Y-%m-%d") == "2007-02-01" |
-                        format(Date_Time,format = "%Y-%m-%d") == "2007-02-02" )
+                                  format(Date_Time,format = "%Y-%m-%d") == "2007-02-02" )
+
+## Creating a column (Weekdays) to store weekdays in the Final_Elect_data 
+## and store in the same Final_Elect_data object
+
+Final_Elect_data = mutate(Final_Elect_data,Weekdays = wday(Date_Time))
 
 ## Creating a PNG file device with width 480 pixels and 480 pixels 
 
-png(filename = "plot1.png",width = 480,height = 480)
+png(filename = "plot2.png",width = 480,height = 480)
 
-## Plotting histogram of "Global Active Power" Graph 
+## Plotting line graph of "Global Active Power" over Date_Time
 
-hist(Final_Elect_data$Global_active_power,col = "red",main = "Global Active Power", xlab = "Global Active Power (kilowatts)")
+plot(Final_Elect_data$Date_Time,Final_Elect_data$Global_active_power,type = "l",xaxt = "n",ylab = "Global Active Power (kilowatts)",xlab = "")
+
+## Extracting the points where i have to put the day ticks
+
+point1 = Final_Elect_data$Date_Time[1]
+point2 = Final_Elect_data$Date_Time[1441]
+point3 = Final_Elect_data$Date_Time[2880]
+
+## Putting (Thu, Fri, Sat) ticks on X-axis
+
+axis(side = 1, at = c(point1,point2,point3),labels = c("Thu","Fri","Sat"))
 
 ## Closing the device
 
 dev.off()
+
+
 
 
 
